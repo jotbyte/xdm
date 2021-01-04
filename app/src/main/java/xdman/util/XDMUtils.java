@@ -52,7 +52,6 @@ public class XDMUtils {
 
 	public static String decodeFileName(String str) {
 		char ch[] = str.toCharArray();
-		StringBuffer buf = new StringBuffer();
 		byte[] bytes = new byte[str.length()];
 		for (int i = 0, j=0; i < ch.length; i++, j++) {
 			if (ch[i] == '/' || ch[i] == '\\' || ch[i] == '"' || ch[i] == '?'
@@ -71,8 +70,7 @@ public class XDMUtils {
 				bytes[j] = (byte) ch[i];
 			}
 		}
-		buf.append(new String(bytes, Charset.defaultCharset()));
-		return buf.toString();
+		return new String(bytes, Charset.defaultCharset());
 	}
 
 	public static String getFileName(String uri) {
