@@ -53,21 +53,25 @@ public class XDMUtils {
 	public static String decodeFileName(String str) {
 		char ch[] = str.toCharArray();
 		StringBuffer buf = new StringBuffer();
-		for (int i = 0; i < ch.length; i++) {
+		byte[] bytes = new byte[str.length()];
+		for (int i = 0, j=0; i < ch.length; i++, j++) {
 			if (ch[i] == '/' || ch[i] == '\\' || ch[i] == '"' || ch[i] == '?'
 					|| ch[i] == '*' || ch[i] == '<' || ch[i] == '>'
 					|| ch[i] == ':')
 				continue;
 			if (ch[i] == '%') {
-				if (i + 2 < ch.length) {
+				if ((i + 2) < ch.length) {
 					int c = Integer.parseInt(ch[i + 1] + "" + ch[i + 2], 16);
-					buf.append((char) c);
+					bytes[j] = (byte) c;
 					i += 2;
-					continue;
 				}
+			} else if (ch[i] == '+'){
+				bytes[j] = (byte) ' ';
+			} else{
+				bytes[j] = (byte) ch[i];
 			}
-			buf.append(ch[i]);
 		}
+		buf.append(new String(bytes, Charset.defaultCharset()));
 		return buf.toString();
 	}
 
